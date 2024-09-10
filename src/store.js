@@ -5,6 +5,22 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    this.maxId = this.state?.list?.length || 0;
+  }
+
+  /**
+   * Максимальное значение id
+   * @returns {number}
+   */
+  getMaxId() {
+    return this.maxId;
+  }
+
+  /**
+   * Установка максимального значения id
+   */
+  setMaxId() {
+    this.maxId += 1;
   }
 
   /**
@@ -42,9 +58,13 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
+    this.setMaxId();
     this.setState({
       ...this.state,
-      list: [...this.state.list, { code: this.state.list.length + 1, title: 'Новая запись' }],
+      list: [
+        ...this.state.list,
+        { code: this.getMaxId(), selectionsCount: 0, title: 'Новая запись' },
+      ],
     });
   }
 
@@ -67,9 +87,8 @@ class Store {
     this.setState({
       ...this.state,
       list: this.state.list.map(item => {
-        if (item.code === code) {
-          item.selected = !item.selected;
-        }
+        item.selected = item.code === code ? !item.selected : false;
+        if (item.code === code && item.selected) item.selectionsCount += 1;
         return item;
       }),
     });

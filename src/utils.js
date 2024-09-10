@@ -26,3 +26,16 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+/**
+ * Корректное отображение количества
+ * @param count {number}
+ * @returns {string}
+ */
+export const countStringify = count => {
+  const lastTwoDigits = count % 100;
+  if (lastTwoDigits > 11 && lastTwoDigits < 15) return 'раз';
+
+  const lastDigit = count % 10;
+  return lastDigit > 1 && lastDigit < 5 ? 'раза' : 'раз';
+};
