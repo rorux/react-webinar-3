@@ -27,14 +27,24 @@ function App({ store }) {
                 onClick={() => store.selectItem(item.code)}
               >
                 <div className="Item-code">{item.code}</div>
-                <div className="Item-title">{item.title}</div>
-                {!!item.selectionsCount && (
-                  <div className="Item-selections">
-                    Выделяли {item.selectionsCount} {countStringify(item.selectionsCount)}
-                  </div>
-                )}
+                <div className="Item-title">
+                  {item.title}
+                  {item.selectionsCount && (
+                    <span>
+                      {' | '}Выделяли {item.selectionsCount} {countStringify(item.selectionsCount)}
+                    </span>
+                  )}
+                </div>
+
                 <div className="Item-actions">
-                  <button onClick={() => store.deleteItem(item.code)}>Удалить</button>
+                  <button
+                    onClick={event => {
+                      event.stopPropagation();
+                      store.deleteItem(item.code);
+                    }}
+                  >
+                    Удалить
+                  </button>
                 </div>
               </div>
             </div>
