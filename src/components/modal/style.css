@@ -1,0 +1,49 @@
+.Modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  outline: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.Modal.active {
+  pointer-events: all;
+}
+
+.Modal-content {
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+  min-width: 960px;
+  opacity: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.Modal-close {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+}
+
+.Modal-content_fading {
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.Modal-content_opened {
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+}

@@ -4,8 +4,9 @@ import { generateCode } from './utils';
  * Хранилище состояния приложения
  */
 class Store {
-  constructor(initState = {}) {
+  constructor(initState = {}, initCart = {}) {
     this.state = initState;
+    this.cart = initCart; // Корзина товаров
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -41,47 +42,47 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
+   * Получение списка товаров в корзине
+   * @returns {Object}
    */
-  addItem() {
-    this.setState({
-      ...this.state,
-      list: [...this.state.list, { code: generateCode(), title: 'Новая запись' }],
-    });
+  getCart() {
+    return this.cart;
   }
 
   /**
-   * Удаление записи по коду
-   * @param code
+   * Изменение корзины
+   * @param newCart {Object}
    */
-  deleteItem(code) {
-    this.setState({
-      ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code),
-    });
+  setCart(newCart) {
+    this.cart = newCart;
+    // Вызываем всех слушателей
+    for (const listener of this.listeners) listener();
   }
 
   /**
-   * Выделение записи по коду
-   * @param code
+   * Добавление товара в корзину
+   * @param item {Object}
    */
-  selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? { ...item, selected: false } : item;
-      }),
-    });
+  addItemToCart(item) {
+    const searchedItem = this.cart.list?.find(el => el.code === item.code);
+
+    if (!searchedItem) {
+      this.setCart({ ...this.cart, list: [...(this.cart.list || []), { ...item, count: 1 }] });
+    } else {
+      const changedItem = { ...searchedItem, count: (searchedItem?.count || 0) + 1 };
+      this.setCart({
+        ...this.cart,
+        list: this.cart.list.map(el => (el.code === item.code ? changedItem : el)),
+      });
+    }
+  }
+
+  /**
+   * Удаление товара из корзины
+   * @param code {number}
+   */
+  removeItemFromCart(code) {
+    this.setCart({ ...this.cart, list: this.cart.list?.filter(item => item.code !== code) || [] });
   }
 }
 

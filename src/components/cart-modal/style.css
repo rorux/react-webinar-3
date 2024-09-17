@@ -1,0 +1,25 @@
+.CartModal {
+  min-height: 380px;
+}
+
+.CartModal-item {
+  border-bottom: 1px dashed #ccc;
+}
+
+.CartModal-total {
+  display: flex;
+  justify-content: end;
+}
+
+.CartModal-label {
+  padding: 20px 10px;
+}
+
+.CartModal-sum {
+  display: flex;
+  justify-content: end;
+  width: 100px;
+  padding: 20px 10px;
+  margin-right: 120px;
+  box-sizing: border-box;
+}
