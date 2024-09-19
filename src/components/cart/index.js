@@ -1,55 +1,29 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
+import Store from '../../store';
 import CartInfo from '../cart-info';
-import CartModal from '../cart-modal';
-import Modal from '../modal';
-import { ItemType } from '../item';
 import './style.css';
 
-function Cart({ cartList, removeItemFromCart }) {
-  const [openedModal, setOpenedModal] = useState(false);
+function Cart({ store, openModal }) {
   const cn = bem('Cart');
-
-  const totalSum = useMemo(
-    () => cartList.reduce((acc, item) => acc + item.count * item.price, 0),
-    [cartList],
-  );
-
-  // закрывать модальное окно когда корзина пустая
-  useEffect(() => {
-    !cartList.length && setOpenedModal(false);
-  }, [cartList]);
+  const { totalSum, totalCount } = store.getState().cart;
 
   return (
     <div className={cn()}>
       <div className={cn('label')}>В корзине:</div>
       <div className={cn('info')}>
-        <CartInfo cartList={cartList} totalSum={totalSum} />
+        <CartInfo totalSum={totalSum} totalCount={totalCount} />
       </div>
       <div className={cn('actions')}>
-        <button
-          className="action-btn"
-          onClick={() => setOpenedModal(true)}
-          disabled={!cartList.length}
-        >
+        <button className="action-btn" onClick={openModal}>
           Перейти
         </button>
       </div>
-      <Modal isOpen={openedModal} onClose={() => setOpenedModal(false)}>
-        <CartModal
-          cartList={cartList}
-          removeItemFromCart={removeItemFromCart}
-          totalSum={totalSum}
-        />
-      </Modal>
     </div>
   );
 }
 
-Cart.propTypes = {
-  cartList: PropTypes.arrayOf(ItemType).isRequired,
-  removeItemFromCart: PropTypes.func.isRequired,
-};
+Cart.propTypes = { store: PropTypes.instanceOf(Store), openModal: PropTypes.func };
 
-export default React.memo(Cart);
+export default Cart;

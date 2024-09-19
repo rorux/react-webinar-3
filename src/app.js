@@ -1,8 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useState } from 'react';
 import List from './components/list';
 import Cart from './components/cart';
 import Head from './components/head';
 import PageLayout from './components/page-layout';
+import ListItem from './components/list-item';
+import CartModal from './components/cart-modal';
+import Modal from './components/modal';
 import './style.css';
 
 /**
@@ -11,30 +14,18 @@ import './style.css';
  * @returns {React.ReactElement}
  */
 function App({ store }) {
-  const list = store.getState().list || [];
-  const cartList = store.getCart().list || [];
-
-  const callbacks = {
-    removeItemFromCart: useCallback(
-      code => {
-        store.removeItemFromCart(code);
-      },
-      [store],
-    ),
-
-    addItemToCart: useCallback(
-      item => {
-        store.addItemToCart(item);
-      },
-      [store],
-    ),
-  };
+  const [openedModal, setOpenedModal] = useState(false);
+  const list = store.getState().list;
+  const { totalSum, list: cartList } = store.getState().cart;
 
   return (
     <PageLayout>
       <Head title="Магазин" />
-      <Cart cartList={cartList} removeItemFromCart={callbacks.removeItemFromCart} />
-      <List list={list} addItemToCart={callbacks.addItemToCart} />
+      <Cart store={store} openModal={() => setOpenedModal(true)} />
+      <List list={list} component={<ListItem store={store} />} />
+      <Modal title="Корзина" opened={openedModal} onClose={() => setOpenedModal(false)}>
+        <CartModal store={store} totalSum={totalSum} cartList={cartList} />
+      </Modal>
     </PageLayout>
   );
 }

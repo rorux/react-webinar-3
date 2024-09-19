@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { plural } from '../../utils';
-import { ItemType } from '../item';
 
 const getPlural = count =>
   plural(count, {
@@ -10,21 +9,19 @@ const getPlural = count =>
     many: 'товаров',
   });
 
-function CartInfo({ cartList, totalSum }) {
-  if (!cartList.length) return <strong>пусто</strong>;
-
-  const count = cartList.length;
+function CartInfo({ totalSum, totalCount }) {
+  if (totalCount === 0) return <strong>пусто</strong>;
 
   return (
     <strong>
-      {`${count} ${getPlural(count)}`} / {`${totalSum} ₽`}
+      {`${totalCount} ${getPlural(totalCount)}`} / {`${totalSum.toLocaleString()} ₽`}
     </strong>
   );
 }
 
 CartInfo.propTypes = {
-  cartList: PropTypes.arrayOf(ItemType).isRequired,
   totalSum: PropTypes.number.isRequired,
+  totalCount: PropTypes.number.isRequired,
 };
 
 export default React.memo(CartInfo);

@@ -34,16 +34,6 @@
   right: 25px;
 }
 
-.Modal-content_fading {
-  -webkit-transition: opacity 0.3s ease-in-out;
-  -moz-transition: opacity 0.3s ease-in-out;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 0;
-}
-
 .Modal-content_opened {
-  -webkit-transition: opacity 0.3s ease-in-out;
-  -moz-transition: opacity 0.3s ease-in-out;
-  transition: opacity 0.3s ease-in-out;
   opacity: 1;
 }

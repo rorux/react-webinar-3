@@ -1,32 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import Item, { ItemType } from '../item';
+import Store from '../../store';
+import List from '../list';
+import CartItem from '../cart-item';
+import { ItemType } from '../list-item';
 import './style.css';
 
-function CartModal({ cartList, removeItemFromCart, totalSum }) {
+function CartModal({ totalSum, cartList, store }) {
   const cn = bem('CartModal');
 
   return (
     <div className={cn()}>
-      {cartList.map(item => (
-        <div key={item.code} className={cn('item')}>
-          <Item
-            item={item}
-            button={
-              <button className="action-btn" onClick={() => removeItemFromCart(item.code)}>
-                Удалить
-              </button>
-            }
-          />
-        </div>
-      ))}
+      <List list={cartList} component={<CartItem store={store} />} />
       <div className={cn('total')}>
         <div className={cn('label')}>
           <strong>Итого</strong>
         </div>
         <div className={cn('sum')}>
-          <strong>{`${totalSum} ₽`}</strong>
+          <strong>{`${totalSum.toLocaleString()} ₽`}</strong>
         </div>
       </div>
     </div>
@@ -34,9 +26,9 @@ function CartModal({ cartList, removeItemFromCart, totalSum }) {
 }
 
 CartModal.propTypes = {
-  cartList: PropTypes.arrayOf(ItemType).isRequired,
-  removeItemFromCart: PropTypes.func.isRequired,
+  cartList: PropTypes.arrayOf(ItemType),
   totalSum: PropTypes.number.isRequired,
+  store: PropTypes.instanceOf(Store),
 };
 
 export default React.memo(CartModal);

@@ -1,36 +1,28 @@
-.Item {
+.ListItem {
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
 }
 
-.Item_selected {
+.ListItem_selected {
   background: #75aaf1;
   color: #fff;
 }
 
-.Item-code {
+.ListItem-code {
   padding: 20px 10px 20px 20px;
 }
 
-.Item-title {
+.ListItem-title {
   width: 100%;
   padding: 20px 10px;
 }
 
-.Item-price {
+.ListItem-price {
   padding: 20px 10px;
 }
 
-.Item-count {
-  display: flex;
-  justify-content: end;
-  width: 150px;
-  padding: 20px 10px;
-  box-sizing: border-box;
-}
-
-.Item-actions {
+.ListItem-actions {
   display: flex;
   justify-content: flex-end;
   padding: 20px 20px 20px 10px;

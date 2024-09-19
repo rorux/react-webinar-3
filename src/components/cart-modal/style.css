@@ -12,13 +12,13 @@
 }
 
 .CartModal-label {
-  padding: 20px 10px;
+  padding: 20px 0;
 }
 
 .CartModal-sum {
   display: flex;
   justify-content: end;
-  width: 100px;
+  width: 120px;
   padding: 20px 10px;
   margin-right: 120px;
   box-sizing: border-box;
