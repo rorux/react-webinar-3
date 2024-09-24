@@ -1,0 +1,33 @@
+.ProductCard {
+  padding: 15px
+}
+
+.ProductCard-description {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+.ProductCard-vendor {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+.ProductCard-category {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+.ProductCard-year {
+  font-size: 18px;
+  padding: 10px 20px;
+}
+
+.ProductCard-price {
+  font-size: 24px;
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+.ProductCard-action {
+  padding: 10px 20px;
+}

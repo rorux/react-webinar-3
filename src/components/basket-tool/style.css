@@ -6,6 +6,10 @@
   font-size: 18px;
 }
 
+.BasketTool-content {
+  flex-grow: 1;
+}
+
 .BasketTool-label {
 }
 

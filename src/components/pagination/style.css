@@ -1,0 +1,31 @@
+/* Пагинация */
+.Pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  padding: 20px;
+  color: #CCCCCC;
+
+}
+
+.Pagination-item {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.Pagination-item:hover {
+  background-color: #E1E1E1;
+}
+
+.Pagination-item_active {
+  color: white;
+  background-color: #0087E9;
+  cursor: default;
+}
+
+.Pagination-item_active:hover {
+  background-color: #0087E9;
+}
+
