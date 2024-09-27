@@ -18,5 +18,8 @@
   "vendor-label": "Страна производитель",
   "category-label": "Категория",
   "year-label": "Год выпуска",
-  "price-label": "Цена"
+  "price-label": "Цена",
+  "no-data-label": "Нет данных",
+  "loading-list-label": "Загрузка товаров...",
+  "loading-product-label": "Загрузка информации о товаре..."
 }

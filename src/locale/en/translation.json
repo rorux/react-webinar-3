@@ -18,5 +18,8 @@
   "vendor-label": "Manufacturing country",
   "category-label": "Category",
   "year-label": "Year of release",
-  "price-label": "Price"
+  "price-label": "Price",
+  "no-data-label": "No data",
+  "loading-list-label": "Products loading...",
+  "loading-product-label": "Loading product information..."
 }

@@ -32,17 +32,20 @@ function Basket() {
             item={item}
             onRemove={callbacks.removeFromBasket}
             closeModal={callbacks.closeModal}
+            piecesLabel={translate('pieces-label')}
+            deleteLabel={translate('delete-label')}
+            link={`/product/${item._id}`}
           />
         );
       },
-      [callbacks.removeFromBasket],
+      [callbacks.removeFromBasket, translate],
     ),
   };
 
   return (
     <ModalLayout title={translate('cart-title')} onClose={callbacks.closeModal}>
       <List list={select.list} renderItem={renders.itemBasket} />
-      <BasketTotal sum={select.sum} />
+      <BasketTotal sum={select.sum} totalLabel={translate('total-label')} />
     </ModalLayout>
   );
 }

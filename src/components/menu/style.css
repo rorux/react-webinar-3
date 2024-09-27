@@ -1,0 +1,13 @@
+.Menu {
+  position: absolute;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.Menu-item {
+  margin-right: 10px;
+}
+
+.Menu-item:last-child {
+  margin-right: 0;
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { LocaleContext } from './context';
 import * as languages from './exports.js';
@@ -9,13 +9,18 @@ const languagesList = {
 };
 
 function LocaleProvider({ children }) {
-  const [language, setLanguage] = useState(languagesList.ru);
+  const [lang, setLang] = useState(localStorage.getItem('locale') || languagesList.ru);
 
-  const translate = key => languages[language][key];
+  const translate = key => languages[lang][key] || key;
+
+  const setLanguage = lang => {
+    localStorage.setItem('locale', lang);
+    setLang(lang);
+  };
 
   return (
     <LocaleContext.Provider
-      value={{ currentLanguage: language, setLanguage, languagesList, translate }}
+      value={{ currentLanguage: lang, setLanguage, languagesList, translate }}
     >
       {children}
     </LocaleContext.Provider>

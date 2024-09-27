@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import useSelector from '../store/use-selector';
 import Main from './main';
 import Basket from './basket';
@@ -14,8 +14,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/list/:page" element={<Main />} />
         <Route path="/product/:id" element={<Product />} />
+        <Route path="*" element={<Navigate to="/list/1" replace />} />
       </Routes>
       {activeModal === 'basket' && <Basket />}
     </BrowserRouter>

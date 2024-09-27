@@ -1,47 +1,68 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import useLocale from '../../locale/use-locale';
+import { numberFormat } from '../../utils';
 import './style.css';
 
-function ProductCard({ _id, description, vendor, category, year, price, onAdd }) {
+function ProductCard({
+  product,
+  onAdd,
+  vendorLabel,
+  categoryLabel,
+  yearLabel,
+  priceLabel,
+  addLabel,
+  noDataLabel,
+}) {
   const cn = bem('ProductCard');
-  const { translate } = useLocale();
 
   const callbacks = {
-    onAdd: e => onAdd?.(_id),
+    onAdd: e => onAdd?.(product._id),
   };
 
   return (
     <div className={cn()}>
-      <div className={cn('description')}>{description}</div>
+      <div className={cn('description')}>{product.description || noDataLabel}</div>
       <div className={cn('vendor')}>
-        {translate('vendor-label')}: <strong>{vendor}</strong>
+        {vendorLabel}: <strong>{product.vendor || noDataLabel}</strong>
       </div>
       <div className={cn('category')}>
-        {translate('category-label')}: <strong>{category}</strong>
+        {categoryLabel}: <strong>{product.category || noDataLabel}</strong>
       </div>
       <div className={cn('year')}>
-        {translate('year-label')}: <strong>{year}</strong>
+        {yearLabel}: <strong>{product.year || noDataLabel}</strong>
       </div>
       <div className={cn('price')}>
-        {translate('price-label')}: <strong>{price} ₽</strong>
+        {priceLabel}:{' '}
+        {typeof product.price === 'number' ? (
+          <strong>{numberFormat(product.price)} ₽</strong>
+        ) : (
+          noDataLabel
+        )}
       </div>
       <div className={cn('action')}>
-        <button onClick={callbacks.onAdd}>{translate('add-label')}</button>
+        <button onClick={callbacks.onAdd}>{addLabel}</button>
       </div>
     </div>
   );
 }
 
 ProductCard.propTypes = {
-  _id: PropTypes.string,
-  description: PropTypes.string,
-  vendor: PropTypes.string,
-  category: PropTypes.string,
-  year: PropTypes.number,
-  price: PropTypes.number,
+  product: PropTypes.shape({
+    _id: PropTypes.string,
+    description: PropTypes.string,
+    vendor: PropTypes.string,
+    category: PropTypes.string,
+    year: PropTypes.number,
+    price: PropTypes.number,
+  }),
   onAdd: PropTypes.func,
+  vendorLabel: PropTypes.string,
+  categoryLabel: PropTypes.string,
+  yearLabel: PropTypes.string,
+  priceLabel: PropTypes.string,
+  addLabel: PropTypes.string,
+  noDataLabel: PropTypes.string,
 };
 
 export default memo(ProductCard);

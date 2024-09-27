@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import useLocale from '../../locale/use-locale';
@@ -8,21 +9,34 @@ import Head from '../../components/head';
 import BasketTool from '../../components/basket-tool';
 import List from '../../components/list';
 import Pagination from '../../components/pagination';
+import Menu from '../../components/menu';
+import LangSwitcher from '../../components/lang-switcher';
+import Loader from '../../components/loader';
 
-const INITIAL_SKIP = 0;
-const ITEMS_PER_PAGE = 10;
+/**
+ * Ссылка на список товаров с учетом пагинации
+ * @param page {number} номер страницы
+ */
+const getPageLink = page => `/list/${page}`;
 
 function Main() {
-  const [offset, setOffset] = useState(INITIAL_SKIP);
+  const [loading, setLoading] = useState(false);
+  const { page } = useParams();
   const store = useStore();
   const { translate } = useLocale();
 
+  const currentPage = +page;
+
   useEffect(() => {
-    store.actions.catalog.load(ITEMS_PER_PAGE, offset);
-  }, [offset]);
+    (async () => {
+      setLoading(true);
+      await store.actions.catalog.load(currentPage);
+      setLoading(false);
+    })();
+  }, [page]);
 
   const select = useSelector(state => ({
-    total: state.catalog.count,
+    lastPage: state.catalog.lastPage,
     list: state.catalog.list,
     basketList: state.basket.list,
     amount: state.basket.amount,
@@ -34,30 +48,56 @@ function Main() {
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Открытие модалки корзины
     openModalBasket: useCallback(() => store.actions.modals.open('basket'), [store]),
-    // Изменение сдвига в пагинации
-    setOffset: useCallback(offset => setOffset(offset), [setOffset]),
   };
 
   const renders = {
     item: useCallback(
       item => {
-        return <Item item={item} onAdd={callbacks.addToBasket} />;
+        return (
+          <Item
+            item={item}
+            onAdd={callbacks.addToBasket}
+            addLabel={translate('add-label')}
+            link={`/product/${item._id}`}
+          />
+        );
       },
-      [callbacks.addToBasket],
+      [callbacks.addToBasket, translate],
     ),
   };
 
   return (
     <PageLayout>
-      <Head title={translate('main-title')} />
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
-      <List list={select.list} renderItem={renders.item} />
-      <Pagination
-        limit={ITEMS_PER_PAGE}
-        total={select.total}
-        offset={offset}
-        setOffset={callbacks.setOffset}
+      <Head title={translate('main-title')} content={<LangSwitcher />} />
+      <Menu items={[{ path: '/', label: translate('main-page') }]} />
+      <BasketTool
+        onOpen={callbacks.openModalBasket}
+        amount={select.amount}
+        sum={select.sum}
+        inCartLabel={translate('in-cart')}
+        oneProductLabel={translate('one-product-label')}
+        fewProductsLabel={translate('few-products-label')}
+        manyProductsLabel={translate('many-products-label')}
+        emptyLabel={translate('empty-label')}
+        goLabel={translate('go-label')}
       />
+      {loading ? (
+        <Loader text={translate('loading-list-label')} />
+      ) : (
+        <>
+          <List list={select.list} renderItem={renders.item} />
+          <Pagination
+            currentPage={currentPage}
+            lastPage={select.lastPage}
+            firstPageLink={getPageLink(1)}
+            thirdPageLink={getPageLink(3)}
+            previousPageLink={getPageLink(currentPage - 1)}
+            nextPageLink={getPageLink(currentPage + 1)}
+            thirdPageFromEndLink={getPageLink(select.lastPage - 2)}
+            lastPageLink={getPageLink(select.lastPage)}
+          />
+        </>
+      )}
     </PageLayout>
   );
 }

@@ -1,56 +1,56 @@
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import './style.css';
 
 const SEPARATOR = '...';
 
-function Pagination({ limit, total, offset, setOffset }) {
+function Pagination({
+  currentPage,
+  lastPage,
+  firstPageLink,
+  thirdPageLink,
+  previousPageLink,
+  nextPageLink,
+  thirdPageFromEndLink,
+  lastPageLink,
+}) {
   const cn = bem('Pagination');
-
-  const currentPage = Math.floor(offset / limit) + 1;
-  const lastPage = Math.ceil(total / limit);
-
-  const callbacks = { setOffset };
+  const navigate = useNavigate();
 
   return (
     <div className={cn()}>
       {currentPage > 2 && (
-        <button className={cn('item')} onClick={() => callbacks.setOffset(0)}>
+        <button className={cn('item')} onClick={() => navigate(firstPageLink)}>
           1
         </button>
       )}
       {currentPage > 3 && SEPARATOR}
       {currentPage === lastPage && (
-        <button
-          className={cn('item')}
-          onClick={() => callbacks.setOffset((Math.ceil(total / limit) - 2) * limit)}
-        >
+        <button className={cn('item')} onClick={() => navigate(thirdPageFromEndLink)}>
           {lastPage - 2}
         </button>
       )}
       {currentPage - 1 > 0 && (
-        <button className={cn('item')} onClick={() => callbacks.setOffset(offset - limit)}>
+        <button className={cn('item')} onClick={() => navigate(previousPageLink)}>
           {currentPage - 1}
         </button>
       )}
       <button className={cn('item', { active: true })}>{currentPage}</button>
       {currentPage + 1 <= lastPage && (
-        <button className={cn('item')} onClick={() => callbacks.setOffset(offset + limit)}>
+        <button className={cn('item')} onClick={() => navigate(nextPageLink)}>
           {currentPage + 1}
         </button>
       )}
       {currentPage === 1 && (
-        <button className={cn('item')} onClick={() => callbacks.setOffset(limit * 2)}>
+        <button className={cn('item')} onClick={() => navigate(thirdPageLink)}>
           3
         </button>
       )}
       {currentPage < lastPage - 2 && SEPARATOR}
       {currentPage < lastPage - 1 && (
-        <button
-          className={cn('item')}
-          onClick={() => callbacks.setOffset(Math.floor(total / limit) * limit)}
-        >
+        <button className={cn('item')} onClick={() => navigate(lastPageLink)}>
           {lastPage}
         </button>
       )}
@@ -59,10 +59,14 @@ function Pagination({ limit, total, offset, setOffset }) {
 }
 
 Pagination.propTypes = {
-  limit: PropTypes.number,
-  total: PropTypes.number,
-  offset: PropTypes.number,
-  setOffset: PropTypes.func,
+  currentPage: PropTypes.number,
+  lastPage: PropTypes.number,
+  firstPageLink: PropTypes.string,
+  thirdPageLink: PropTypes.string,
+  previousPageLink: PropTypes.string,
+  nextPageLink: PropTypes.string,
+  thirdPageFromEndLink: PropTypes.string,
+  lastPageLink: PropTypes.string,
 };
 
 export default memo(Pagination);

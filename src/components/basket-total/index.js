@@ -1,17 +1,15 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import useLocale from '../../locale/use-locale';
 import { numberFormat } from '../../utils';
 import './style.css';
 
-function BasketTotal({ sum = 0 }) {
+function BasketTotal({ sum = 0, totalLabel }) {
   const cn = bem('BasketTotal');
-  const { translate } = useLocale();
 
   return (
     <div className={cn()}>
-      <span className={cn('cell')}>{translate('total-label')}</span>
+      <span className={cn('cell')}>{totalLabel}</span>
       <span className={cn('cell')}> {numberFormat(sum)} ₽</span>
       <span className={cn('cell')}></span>
     </div>
@@ -20,6 +18,7 @@ function BasketTotal({ sum = 0 }) {
 
 BasketTotal.propTypes = {
   sum: PropTypes.number,
+  totalLabel: PropTypes.string,
 };
 
 export default memo(BasketTotal);

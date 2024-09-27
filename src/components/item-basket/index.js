@@ -2,13 +2,11 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import useLocale from '../../locale/use-locale';
 import { numberFormat } from '../../utils';
 import './style.css';
 
 function ItemBasket(props) {
   const cn = bem('ItemBasket');
-  const { translate } = useLocale();
 
   const callbacks = {
     onRemove: e => props.onRemove?.(props.item._id),
@@ -18,15 +16,15 @@ function ItemBasket(props) {
   return (
     <div className={cn()}>
       <div className={cn('title')} onClick={callbacks.closeModal}>
-        <Link to={`/product/${props.item._id}`}>{props.item.title}</Link>
+        <Link to={props.link}>{props.item.title}</Link>
       </div>
       <div className={cn('right')}>
         <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
         <div className={cn('cell')}>
-          {numberFormat(props.item.amount || 0)} {translate('pieces-label')}
+          {numberFormat(props.item.amount || 0)} {props.piecesLabel}
         </div>
         <div className={cn('cell')}>
-          <button onClick={callbacks.onRemove}>{translate('delete-label')}</button>
+          <button onClick={callbacks.onRemove}>{props.deleteLabel}</button>
         </div>
       </div>
     </div>
@@ -40,8 +38,11 @@ ItemBasket.propTypes = {
     price: PropTypes.number,
     amount: PropTypes.number,
   }).isRequired,
+  link: PropTypes.string,
   onRemove: PropTypes.func,
   closeModal: PropTypes.func,
+  piecesLabel: PropTypes.string,
+  deleteLabel: PropTypes.string,
 };
 
 export default memo(ItemBasket);

@@ -1,6 +1,8 @@
 import { codeGenerator } from '../../utils';
 import StoreModule from '../module';
 
+const ITEMS_PER_PAGE = 10;
+
 class Catalog extends StoreModule {
   constructor(store, name) {
     super(store, name);
@@ -10,27 +12,39 @@ class Catalog extends StoreModule {
   initState() {
     return {
       list: [],
+      limit: ITEMS_PER_PAGE,
+      lastPage: 0,
     };
   }
 
   /**
    * Загрузка списка товаров с пагинацией
-   * @param limit {number} количество на страницу
-   * @param offset {number} сдвиг
+   * @param page {number} номер страницы
    */
-  async load(limit = 10, offset = 0) {
-    const response = await fetch(
-      `/api/v1/articles?limit=${limit}&skip=${offset}&fields=items(_id, title, price),count`,
-    );
-    const json = await response.json();
-    this.setState(
-      {
-        ...this.getState(),
-        list: json.result.items,
-        count: json.result.count,
-      },
-      'Загружены товары из АПИ',
-    );
+  async load(page) {
+    try {
+      const limit = this.getState().limit;
+      const skip = (page - 1) * limit;
+
+      const response = await fetch(
+        `/api/v1/articles?limit=${limit}&skip=${skip}&fields=items(_id, title, price),count`,
+      );
+      const json = await response.json();
+      const list = json.result.items;
+      const totalCount = json.result.count;
+      const lastPage = Math.ceil(totalCount / limit);
+
+      this.setState(
+        {
+          ...this.getState(),
+          list,
+          lastPage,
+        },
+        'Загружены товары из АПИ',
+      );
+    } catch (_) {
+      console.log('Ошибка загрузки товаров!');
+    }
   }
 }
 

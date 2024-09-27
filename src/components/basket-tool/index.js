@@ -1,31 +1,35 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import useLocale from '../../locale/use-locale';
 import { numberFormat, plural } from '../../utils';
 import './style.css';
 
-function BasketTool({ sum = 0, amount = 0, onOpen = () => {} }) {
+function BasketTool({
+  sum = 0,
+  amount = 0,
+  onOpen = () => {},
+  inCartLabel,
+  oneProductLabel,
+  fewProductsLabel,
+  manyProductsLabel,
+  emptyLabel,
+  goLabel,
+}) {
   const cn = bem('BasketTool');
-  const { translate } = useLocale();
 
   return (
     <div className={cn()}>
-      <span className={cn('content')}>
-        <Link to="/">{translate('main-page')}</Link>
-      </span>
-      <span className={cn('label')}>{translate('in-cart')}</span>
+      <span className={cn('label')}>{inCartLabel}</span>
       <span className={cn('total')}>
         {amount
           ? `${amount} ${plural(amount, {
-              one: translate('one-product-label'),
-              few: translate('few-products-label'),
-              many: translate('many-products-label'),
+              one: oneProductLabel,
+              few: fewProductsLabel,
+              many: manyProductsLabel,
             })} / ${numberFormat(sum)} ₽`
-          : translate('empty-label')}
+          : emptyLabel}
       </span>
-      <button onClick={onOpen}>{translate('go-label')}</button>
+      <button onClick={onOpen}>{goLabel}</button>
     </div>
   );
 }
@@ -34,6 +38,12 @@ BasketTool.propTypes = {
   onOpen: PropTypes.func.isRequired,
   sum: PropTypes.number,
   amount: PropTypes.number,
+  inCartLabel: PropTypes.string,
+  oneProductLabel: PropTypes.string,
+  fewProductsLabel: PropTypes.string,
+  manyProductsLabel: PropTypes.string,
+  emptyLabel: PropTypes.string,
+  goLabel: PropTypes.string,
 };
 
 export default memo(BasketTool);
