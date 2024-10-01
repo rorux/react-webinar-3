@@ -4,7 +4,7 @@ import './style.css';
 
 function Select(props) {
   const onSelect = e => {
-    props.onChange(e.target.value);
+    props.onChange?.(e.target.value);
   };
 
   return (
@@ -27,10 +27,6 @@ Select.propTypes = {
   ).isRequired,
   value: PropTypes.any,
   onChange: PropTypes.func,
-};
-
-Select.defaultProps = {
-  onChange: () => {},
 };
 
 export default memo(Select);

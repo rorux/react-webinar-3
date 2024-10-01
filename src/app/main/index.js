@@ -17,7 +17,10 @@ function Main() {
 
   useInit(
     () => {
-      store.actions.catalog.initParams();
+      (async () => {
+        await store.actions.catalog.initParams();
+        await store.actions.categories.load();
+      })();
     },
     [],
     true,

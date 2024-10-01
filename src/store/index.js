@@ -10,6 +10,7 @@ class Store {
     /** @type {{
      * basket: BasketState,
      * catalog: CatalogState,
+     * categories: CategoriesState,
      * modals: ModalsState,
      * article: ArticleState,
      * locale: LocaleState

@@ -10,7 +10,7 @@ function Input(props) {
   const [value, setValue] = useState(props.value);
 
   const onChangeDebounce = useCallback(
-    debounce(value => props.onChange(value, props.name), 600),
+    debounce(value => props.onChange?.(value, props.name), 600),
     [props.onChange, props.name],
   );
 
@@ -26,9 +26,9 @@ function Input(props) {
   const cn = bem('Input');
   return (
     <input
-      className={cn({ theme: props.theme })}
+      className={cn({ theme: props.theme || '' })}
       value={value}
-      type={props.type}
+      type={props.type || 'text'}
       placeholder={props.placeholder}
       onChange={onChange}
     />
@@ -42,12 +42,6 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   theme: PropTypes.string,
-};
-
-Input.defaultProps = {
-  onChange: () => {},
-  type: 'text',
-  theme: '',
 };
 
 export default memo(Input);

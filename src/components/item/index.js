@@ -9,12 +9,11 @@ function Item(props) {
   const cn = bem('Item');
 
   const callbacks = {
-    onAdd: e => props.onAdd(props.item._id),
+    onAdd: e => props.onAdd?.(props.item._id),
   };
 
   return (
     <div className={cn()}>
-      {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn('title')}>
         <Link to={props.link}>{props.item.title}</Link>
       </div>
@@ -38,12 +37,6 @@ Item.propTypes = {
   onAdd: PropTypes.func,
   labelCurr: PropTypes.string,
   labelAdd: PropTypes.string,
-};
-
-Item.defaultProps = {
-  onAdd: () => {},
-  labelCurr: '₽',
-  labelAdd: 'Добавить',
 };
 
 export default memo(Item);
