@@ -8,6 +8,7 @@ import Head from '../../components/head';
 import CatalogFilter from '../../containers/catalog-filter';
 import CatalogList from '../../containers/catalog-list';
 import LocaleSelect from '../../containers/locale-select';
+import AuthPanel from '../../components/auth-panel';
 
 /**
  * Главная страница - первичная загрузка каталога
@@ -18,8 +19,8 @@ function Main() {
   useInit(
     () => {
       (async () => {
-        await store.actions.catalog.initParams();
         await store.actions.categories.load();
+        await store.actions.catalog.initParams();
       })();
     },
     [],
@@ -30,6 +31,7 @@ function Main() {
 
   return (
     <PageLayout>
+      <AuthPanel />
       <Head title={t('title')}>
         <LocaleSelect />
       </Head>

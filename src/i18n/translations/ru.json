@@ -17,5 +17,12 @@
     "many": "товаров",
     "other": "товара"
   },
-  "all": "Все"
+  "username": "Логин",
+  "password": "Пароль",
+  "username.placeholder": "Введите логин...",
+  "password.placeholder": "Введите пароль...",
+  "enter": "Вход",
+  "search": "Поиск",
+  "all": "Все",
+  "getIn": "Войти"
 }

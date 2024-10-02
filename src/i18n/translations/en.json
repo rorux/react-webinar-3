@@ -15,5 +15,12 @@
     "one": "article",
     "other": "articles"
   },
-  "all": "All"
+  "username": "Login",
+  "password": "Password",
+  "username.placeholder": "Enter Login...",
+  "password.placeholder": "Enter Password...",
+  "enter": "Enter",
+  "search": "Search",
+  "all": "All",
+  "getIn": "Get In"
 }

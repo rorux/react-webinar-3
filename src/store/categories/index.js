@@ -71,7 +71,7 @@ class CategoriesState extends StoreModule {
   }
 
   /**
-   * Приведение категорий к итоговому виду
+   * Приведение списка категорий к итоговому виду
    * @param cats {Array<Object>}
    * @param level {Number}
    * @return {Array<{ value: String, title: String }>}

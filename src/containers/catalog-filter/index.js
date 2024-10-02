@@ -5,6 +5,7 @@ import useSelector from '../../hooks/use-selector';
 import Select from '../../components/select';
 import Input from '../../components/input';
 import SideLayout from '../../components/side-layout';
+import Spinner from '../../components/spinner';
 
 /**
  * Контейнер со всеми фильтрами каталога
@@ -17,6 +18,7 @@ function CatalogFilter() {
     query: state.catalog.params.query,
     category: state.catalog.params.catId,
     categories: state.categories.list,
+    waiting: state.categories.waiting,
   }));
 
   const callbacks = {
@@ -49,17 +51,19 @@ function CatalogFilter() {
 
   return (
     <SideLayout padding="medium">
-      <Select
-        options={[{ value: '', title: t('all') }, ...select.categories]}
-        value={select.category}
-        onChange={callbacks.onGroupByCategory}
-      />
+      <Spinner active={select.waiting}>
+        <Select
+          options={[{ value: '', title: t('all') }, ...select.categories]}
+          value={select.category}
+          onChange={callbacks.onGroupByCategory}
+        />
+      </Spinner>
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort} />
       <Input
         value={select.query}
         onChange={callbacks.onSearch}
-        placeholder={'Поиск'}
-        delay={1000}
+        placeholder={t('search') + '...'}
+        delay={600}
       />
       <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
     </SideLayout>
