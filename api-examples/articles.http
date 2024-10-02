@@ -12,8 +12,8 @@ GET http://query.rest/api/v1/articles?limit=10&skip=20
 # Список с пагинацией и возвратом общего количества (и только нужных свойств через fields)
 # Про формат fields смотри http://query.rest
 
-GET http://query.rest/api/v1/articles?limit=10&skip=10&search[query]=&
-  fields=items(_id, title, price,category(title)),count
+GET http://query.rest/api/v1/articles?limit=10&skip=10&
+  fields=items(_id, title, price),count
 
 ###
 # Товар по id

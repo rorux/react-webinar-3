@@ -1,7 +1,7 @@
 import { memo, useCallback, useLayoutEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import debounce from 'lodash.debounce';
 
 import './style.css';
 

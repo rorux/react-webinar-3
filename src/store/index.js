@@ -13,7 +13,8 @@ class Store {
      * categories: CategoriesState,
      * modals: ModalsState,
      * article: ArticleState,
-     * locale: LocaleState
+     * locale: LocaleState,
+     * auth: AuthState,
      * user: UserState
      * }} */
     this.actions = {};
@@ -45,6 +46,7 @@ class Store {
    * modals: Object,
    * article: Object,
    * locale: Object,
+   * auth: Object,
    * user: Object
    * }}
    */

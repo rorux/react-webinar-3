@@ -15,12 +15,18 @@
     "one": "article",
     "other": "articles"
   },
-  "username": "Login",
-  "password": "Password",
-  "username.placeholder": "Enter Login...",
-  "password.placeholder": "Enter Password...",
-  "enter": "Enter",
+  "login.title": "Enter",
+  "login.username": "Login",
+  "login.password": "Password",
+  "login.username.placeholder": "Enter Login...",
+  "login.password.placeholder": "Enter Password...",
   "search": "Search",
+  "profile.title": "Profile",
+  "profile.name": "Name",
+  "profile.phone": "Phone",
+  "profile.email": "Email",
   "all": "All",
+  "enter": "Enter",
+  "exit": "Exit",
   "getIn": "Get In"
 }

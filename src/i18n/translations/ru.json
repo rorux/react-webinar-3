@@ -17,12 +17,18 @@
     "many": "товаров",
     "other": "товара"
   },
-  "username": "Логин",
-  "password": "Пароль",
-  "username.placeholder": "Введите логин...",
-  "password.placeholder": "Введите пароль...",
-  "enter": "Вход",
+  "login.title": "Вход",
+  "login.username": "Логин",
+  "login.password": "Пароль",
+  "login.username.placeholder": "Введите логин...",
+  "login.password.placeholder": "Введите пароль...",
   "search": "Поиск",
+  "profile.title": "Профиль",
+  "profile.name": "Имя",
+  "profile.phone": "Телефон",
+  "profile.email": "Email",
   "all": "Все",
+  "enter": "Вход",
+  "exit": "Выход",
   "getIn": "Войти"
 }

@@ -1,94 +1,60 @@
 import StoreModule from '../module';
 
+const INITIAL_STATE = {
+  data: { name: null, email: null, phone: null, username: null },
+  error: null,
+  waiting: false,
+};
+
 /**
- * Данные авторизации
+ * Данные о пользователе
  */
 class UserState extends StoreModule {
   initState() {
-    return {
-      loginInputValue: '',
-      passwordInputValue: '',
-      username: null,
-      error: null,
-      waiting: false,
-    };
+    return INITIAL_STATE;
   }
 
   /**
-   * Авторизация пользователя
+   * Получение данных о пользователе
    * @return {Promise<void>}
    */
-  async sign() {
+  async getProfile() {
     this.setState({
       ...this.getState(),
       waiting: true,
     });
 
-    const login = this.getState().loginInputValue;
-    const password = this.getState().passwordInputValue;
-
     try {
       const options = {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'X-Token': localStorage.getItem('token'),
         },
-        body: JSON.stringify({ login, password }),
       };
-      const response = await fetch(`/api/v1/users/sign`, options);
+      const response = await fetch(`/api/v1/users/self?fields=*`, options);
       const json = await response.json();
 
       if (json.error)
-        throw new Error(json.error.data?.issues?.[0]?.message || 'Ошибка отправки формы!');
+        throw new Error(json.error.data?.issues?.[0]?.message || 'Требуется авторизация!');
 
       const {
-        token,
-        user: { username },
+        email,
+        username,
+        profile: { name, phone },
       } = json.result;
 
-      if (token) {
-        localStorage.setItem('token', token);
-        this.setState(
-          {
-            loginInputValue: '',
-            passwordInputValue: '',
-            username,
-            error: null,
-            waiting: false,
-          },
-          'Пользователь авторизован',
-        );
-      }
+      this.setState(
+        {
+          data: { email, name, phone, username },
+          error: null,
+          waiting: false,
+        },
+        'Получены данные о пользователе',
+      );
     } catch (error) {
-      this.setState({
-        ...this.getState(),
-        username: null,
-        error: error.message,
-        waiting: false,
-      });
+      this.setState(Object.assign(INITIAL_STATE, { error: error.message }));
     }
-  }
-
-  /**
-   * Изменение значения поля ввода логина
-   * @param login {String}
-   */
-  setLoginInput(loginInputValue) {
-    this.setState({
-      ...this.getState(),
-      loginInputValue,
-    });
-  }
-
-  /**
-   * Изменение значения поля ввода пароля
-   * @param password {String}
-   */
-  setPasswordInput(passwordInputValue) {
-    this.setState({
-      ...this.getState(),
-      passwordInputValue,
-    });
   }
 }
 

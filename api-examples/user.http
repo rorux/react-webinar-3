@@ -5,7 +5,7 @@ POST http://query.rest/api/v1/users/sign
 Content-Type: application/json
 
 {
-  "login": "testqq_1",
+  "login": "test_1",
   "password": "123456"
 }
 
