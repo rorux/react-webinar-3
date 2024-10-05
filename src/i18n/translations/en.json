@@ -20,7 +20,6 @@
   "login.password": "Password",
   "login.username.placeholder": "Enter Login...",
   "login.password.placeholder": "Enter Password...",
-  "search": "Search",
   "profile.title": "Profile",
   "profile.name": "Name",
   "profile.phone": "Phone",
@@ -28,5 +27,7 @@
   "all": "All",
   "enter": "Enter",
   "exit": "Exit",
-  "getIn": "Get In"
+  "getIn": "Get In",
+  "search": "Search",
+  "loading": "Loading..."
 }

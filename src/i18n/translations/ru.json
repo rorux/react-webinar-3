@@ -22,7 +22,6 @@
   "login.password": "Пароль",
   "login.username.placeholder": "Введите логин...",
   "login.password.placeholder": "Введите пароль...",
-  "search": "Поиск",
   "profile.title": "Профиль",
   "profile.name": "Имя",
   "profile.phone": "Телефон",
@@ -30,5 +29,7 @@
   "all": "Все",
   "enter": "Вход",
   "exit": "Выход",
-  "getIn": "Войти"
+  "getIn": "Войти",
+  "search": "Поиск",
+  "loading": "Загрузка..."
 }

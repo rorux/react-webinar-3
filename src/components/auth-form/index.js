@@ -1,29 +1,23 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
-import useStore from '../../hooks/use-store';
-import useSelector from '../../hooks/use-selector';
 import Input from '../input';
 import Spinner from '../spinner';
 import './style.css';
 
-function AuthForm({ t = text => text }) {
+function AuthForm({
+  t = text => text,
+  login = '',
+  password = '',
+  error = '',
+  waiting = false,
+  onSubmitForm,
+  onChangeLogin,
+  onChangePassword,
+}) {
   const cn = bem('AuthForm');
-
-  const store = useStore();
-
-  const select = useSelector(state => ({
-    login: state.auth.loginInputValue,
-    password: state.auth.passwordInputValue,
-    error: state.auth.error,
-    waiting: state.auth.waiting,
-  }));
-
-  const callbacks = {
-    onSubmitForm: useCallback(() => store.actions.auth.sign(), [store]),
-    onChangeLogin: useCallback(val => store.actions.auth.setLoginInput(val), [store]),
-    onChangePassword: useCallback(val => store.actions.auth.setPasswordInput(val), [store]),
-  };
+  const navigate = useNavigate();
 
   return (
     <div className={cn()}>
@@ -31,15 +25,15 @@ function AuthForm({ t = text => text }) {
       <form
         onSubmit={e => {
           e.preventDefault();
-          callbacks.onSubmitForm();
+          onSubmitForm();
         }}
       >
-        <Spinner active={select.waiting}>
+        <Spinner active={waiting}>
           <div className={cn('row')}>
             <Input
               id="username"
-              value={select.login}
-              onChange={callbacks.onChangeLogin}
+              value={login}
+              onChange={onChangeLogin}
               placeholder={t('login.username.placeholder')}
               label={t('login.username')}
             />
@@ -48,13 +42,13 @@ function AuthForm({ t = text => text }) {
             <Input
               id="password"
               type="password"
-              value={select.password}
-              onChange={callbacks.onChangePassword}
+              value={password}
+              onChange={onChangePassword}
               placeholder={t('login.password.placeholder')}
               label={t('login.password')}
             />
           </div>
-          <div className={cn('row', { errors: true })}>{select.error}</div>
+          <div className={cn('row', { errors: true })}>{error}</div>
           <div className={cn('row')}>
             <button type="submit">{t('getIn')}</button>
           </div>
@@ -66,6 +60,13 @@ function AuthForm({ t = text => text }) {
 
 AuthForm.propTypes = {
   t: PropTypes.func,
+  login: PropTypes.string,
+  password: PropTypes.string,
+  error: PropTypes.string,
+  waiting: PropTypes.bool,
+  onSubmitForm: PropTypes.func,
+  onChangeLogin: PropTypes.func,
+  onChangePassword: PropTypes.func,
 };
 
 export default memo(AuthForm);

@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   username: null,
   error: null,
   waiting: false,
+  authed: null,
 };
 
 /**
@@ -57,6 +58,7 @@ class AuthState extends StoreModule {
             username,
             error: null,
             waiting: false,
+            authed: true,
           },
           'Пользователь авторизован',
         );
@@ -67,6 +69,7 @@ class AuthState extends StoreModule {
         username: null,
         error: error.message,
         waiting: false,
+        authed: false,
       });
     }
   }
@@ -101,10 +104,8 @@ class AuthState extends StoreModule {
       }
     } catch (error) {
       this.setState({
-        ...this.getState(),
-        username: null,
-        error: error.message,
-        waiting: false,
+        ...INITIAL_STATE,
+        authed: false,
       });
     }
   }
@@ -139,6 +140,7 @@ class AuthState extends StoreModule {
     this.setState({
       ...this.getState(),
       username,
+      authed: true,
     });
   }
 }

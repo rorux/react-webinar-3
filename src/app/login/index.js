@@ -1,5 +1,7 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import useTranslate from '../../hooks/use-translate';
+import useStore from '../../hooks/use-store';
+import useSelector from '../../hooks/use-selector';
 import LocaleSelect from '../../containers/locale-select';
 import Navigation from '../../containers/navigation';
 import AuthPanel from '../../containers/auth-panel';
@@ -12,6 +14,20 @@ import AuthForm from '../../components/auth-form';
  */
 function Login() {
   const { t } = useTranslate();
+  const store = useStore();
+
+  const select = useSelector(state => ({
+    login: state.auth.loginInputValue,
+    password: state.auth.passwordInputValue,
+    error: state.auth.error,
+    waiting: state.auth.waiting,
+  }));
+
+  const callbacks = {
+    onSubmitForm: useCallback(() => store.actions.auth.sign(), [store]),
+    onChangeLogin: useCallback(val => store.actions.auth.setLoginInput(val), [store]),
+    onChangePassword: useCallback(val => store.actions.auth.setPasswordInput(val), [store]),
+  };
 
   return (
     <PageLayout>
@@ -20,7 +36,7 @@ function Login() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <AuthForm t={t} />
+      <AuthForm t={t} {...select} {...callbacks} />
     </PageLayout>
   );
 }

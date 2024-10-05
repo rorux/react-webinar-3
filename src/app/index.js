@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import useSelector from '../hooks/use-selector';
+import ProtectedRoute from '../containers/protected-route';
 import Main from './main';
 import Basket from './basket';
 import Article from './article';
@@ -16,10 +17,18 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path={''} element={<Main />} />
-        <Route path={'/articles/:id'} element={<Article />} />
-        <Route path={'/login'} element={<Login />} />
-        <Route path={'/profile'} element={<Profile />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path={''} element={<Main />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={'/articles/:id'} element={<Article />} />
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={'/profile'} element={<Profile />} />
+        </Route>
+        <Route element={<ProtectedRoute secured={false} />}>
+          <Route path={'/login'} element={<Login />} />
+        </Route>
       </Routes>
       {activeModal === 'basket' && <Basket />}
     </>

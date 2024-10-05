@@ -78,7 +78,7 @@ class CategoriesState extends StoreModule {
    */
   transform(cats, level = 0) {
     const result = [];
-    const prefix = '-'.repeat(level);
+    const prefix = '- '.repeat(level);
 
     cats.forEach(cat => {
       result.push({ value: cat._id, title: prefix + cat.title });

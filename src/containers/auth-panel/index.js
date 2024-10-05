@@ -4,6 +4,7 @@ import useStore from '../../hooks/use-store';
 import useTranslate from '../../hooks/use-translate';
 import useSelector from '../../hooks/use-selector';
 import SideLayout from '../../components/side-layout';
+import Divider from '../../components/divider';
 
 function AuthPanel() {
   const store = useStore();
@@ -22,17 +23,20 @@ function AuthPanel() {
   }));
 
   return (
-    <SideLayout side="end" padding="medium">
-      {select.username ? (
-        <SideLayout side="between">
-          <Link to="/profile">{select.username}</Link>
-          {'  '}
-          <button onClick={callbacks.logOutHandler}>{t('exit')}</button>
-        </SideLayout>
-      ) : (
-        <button onClick={() => navigate('/login')}>{t('enter')}</button>
-      )}
-    </SideLayout>
+    <>
+      <SideLayout side="end" padding="medium">
+        {select.username ? (
+          <SideLayout side="between">
+            <Link to="/profile">{select.username}</Link>
+            {'  '}
+            <button onClick={callbacks.logOutHandler}>{t('exit')}</button>
+          </SideLayout>
+        ) : (
+          <button onClick={() => navigate('/login')}>{t('enter')}</button>
+        )}
+      </SideLayout>
+      <Divider />
+    </>
   );
 }
 
