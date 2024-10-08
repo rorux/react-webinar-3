@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { I18nContext } from '../i18n/context';
 
 /**
