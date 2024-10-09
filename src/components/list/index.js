@@ -24,7 +24,6 @@ List.propTypes = {
     }),
   ).isRequired,
   renderItem: PropTypes.func,
-  hasSeparators: PropTypes.bool,
 };
 
 export default memo(List);

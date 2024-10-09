@@ -17,6 +17,7 @@ import Spinner from '../../components/spinner';
 import ArticleCard from '../../components/article-card';
 
 function Article() {
+  const { t, lang } = useTranslate();
   const store = useStore();
 
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function Article() {
   useInit(() => {
     dispatch(articleActions.load(params.id));
     dispatch(commentsActions.load(params.id));
-  }, [params.id]);
+  }, [params.id, lang]);
 
   const select = useSelector(
     state => ({
@@ -36,8 +37,6 @@ function Article() {
     }),
     shallowequal,
   ); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
-
-  const { t } = useTranslate();
 
   const callbacks = {
     // Добавление в корзину

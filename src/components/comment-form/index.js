@@ -51,7 +51,9 @@ function CommentForm({
           ></textarea>
         </div>
         <SideLayout>
-          <button type="submit">{t('comments.send')}</button>
+          <button type="submit" disabled={!text}>
+            {t('comments.send')}
+          </button>
           <>
             {type === 'answer' && <button onClick={cancelHandler}>{t('comments.cancel')}</button>}
           </>
