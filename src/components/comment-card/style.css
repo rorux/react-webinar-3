@@ -11,6 +11,10 @@
   font-weight: 700;
 }
 
+.CommentCard-author_me {
+  color: #666;
+}
+
 .CommentCard-date {
   font-size: 12px;
   color: #666666;
@@ -19,11 +23,13 @@
 .CommentCard-text {
   font-size: 14px;
   padding: 10px 0;
+  word-break: break-all;
 }
 
 .CommentCard-answer {
   color: #0087E9;
   cursor: pointer;
   font-size: 12px;
+  text-decoration: none;
 }
 

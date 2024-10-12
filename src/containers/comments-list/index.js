@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector as useReduxSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import shallowequal from 'shallowequal';
@@ -6,12 +6,11 @@ import useTranslate from '../../hooks/use-translate';
 import useSelector from '../../hooks/use-selector';
 import commentsActions from '../../store-redux/comments/actions';
 import formatDateByLocale from '../../utils/format-date-by-locale';
+import commentsListToTree from '../../utils/comments-list-to-tree';
 import Spinner from '../../components/spinner';
 import TitleWithCount from '../../components/title-with-count';
 import CommentsBlock from '../../components/comments-block';
 import RootCommentForm from '../../components/root-comment-form';
-import commentsListToTree from './utils/comments-list-to-tree';
-import { HashLink } from 'react-router-hash-link';
 
 const LOGIN_PATH = '/login';
 
@@ -55,6 +54,11 @@ function CommentsList({ articleId }) {
     ),
   };
 
+  useEffect(() => {
+    // закрываем форму ответа на комментарий
+    return () => callbacks.setActiveComment(null);
+  }, []);
+
   const commentsList = useMemo(() => commentsListToTree(reduxSelect.list), [reduxSelect.list]);
 
   return (
@@ -69,6 +73,7 @@ function CommentsList({ articleId }) {
         activeComment={reduxSelect.activeComment}
         setActiveComment={callbacks.setActiveComment}
         submitHandler={callbacks.addAnswer}
+        myUsername={select.username}
       />
       {reduxSelect.activeComment === null && (
         <RootCommentForm

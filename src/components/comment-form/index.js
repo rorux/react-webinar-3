@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import SideLayout from '../side-layout';
@@ -10,34 +10,50 @@ function CommentForm({
   sessionExists,
   loginPath,
   type,
-  cancelHandler,
+  closeForm,
   submitHandler,
   id = 'new-comment',
+  hasOffset,
 }) {
   const [text, setText] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
   const cn = bem('CommentForm');
 
   if (!sessionExists)
     return (
-      <div className={cn()}>
+      <div className={cn({ hasOffset })} id={id}>
         <div className={cn('denied')}>
-          <Link to={loginPath} className={cn('link')}>
+          <span
+            className={cn('link')}
+            onClick={() => navigate(loginPath, { state: { back: location.pathname } })}
+          >
             {t('comments.logIn')}
-          </Link>
-          {t('comments.hasAccess')}
+          </span>
+          {type === 'answer' ? (
+            <>
+              {t('comments.canAnswer')}
+              <span className={cn('cancel')} onClick={closeForm}>
+                {t('comments.cancel')}
+              </span>
+            </>
+          ) : (
+            <>{t('comments.canComment')}</>
+          )}
         </div>
       </div>
     );
 
   return (
-    <div className={cn()}>
+    <div className={cn({ hasOffset })} id={id}>
       <form
-        onSubmit={e => {
+        onSubmit={async e => {
           e.preventDefault();
-          submitHandler?.(text, id);
+          await submitHandler?.(text.trim(), id);
+          closeForm?.();
         }}
       >
-        <div className={cn('row')} id={id}>
+        <div className={cn('row')}>
           <label className={cn('label')}>
             {type === 'answer' ? t('comments.newAnswer') : t('comments.newComment')}
           </label>
@@ -51,12 +67,10 @@ function CommentForm({
           ></textarea>
         </div>
         <SideLayout>
-          <button type="submit" disabled={!text}>
+          <button type="submit" disabled={!text.trim()}>
             {t('comments.send')}
           </button>
-          <>
-            {type === 'answer' && <button onClick={cancelHandler}>{t('comments.cancel')}</button>}
-          </>
+          <>{type === 'answer' && <button onClick={closeForm}>{t('comments.cancel')}</button>}</>
         </SideLayout>
       </form>
     </div>
@@ -68,9 +82,10 @@ CommentForm.propTypes = {
   sessionExists: PropTypes.bool,
   loginPath: PropTypes.string,
   type: PropTypes.string,
-  cancelHandler: PropTypes.func,
+  closeForm: PropTypes.func,
   submitHandler: PropTypes.func,
   id: PropTypes.string,
+  hasOffset: PropTypes.bool,
 };
 
 export default memo(CommentForm);

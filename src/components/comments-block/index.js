@@ -5,6 +5,8 @@ import CommentCard from '../comment-card';
 import CommentForm from '../comment-form';
 import './style.css';
 
+const MAX_LEVEL_WITH_OFFSET = 16;
+
 function CommentsBlock(props) {
   const {
     list,
@@ -16,14 +18,17 @@ function CommentsBlock(props) {
     activeComment,
     setActiveComment,
     submitHandler,
+    myUsername,
   } = props;
 
   const cn = bem('CommentsBlock');
 
+  const hasOffset = level < MAX_LEVEL_WITH_OFFSET;
+
   return (
     <>
       {list.map(comment => (
-        <div key={comment._id} className={cn(!level && 'firstLevel')}>
+        <div key={comment._id} className={cn(!level ? 'firstLevel' : hasOffset ? 'offset' : '')}>
           <CommentCard
             id={comment._id}
             author={comment.author.profile.name}
@@ -31,9 +36,14 @@ function CommentsBlock(props) {
             text={comment.text}
             answerLabel={t('comments.answer')}
             onAnswerClick={() => setActiveComment(comment._id)}
+            myUsername={myUsername}
           />
           {!!comment.children.length && (
-            <CommentsBlock {...props} list={comment.children} level={level + 1} />
+            <CommentsBlock
+              {...props}
+              list={comment.children}
+              level={hasOffset ? level + 1 : MAX_LEVEL_WITH_OFFSET}
+            />
           )}
           {activeComment === comment._id && (
             <CommentForm
@@ -41,9 +51,10 @@ function CommentsBlock(props) {
               sessionExists={sessionExists}
               loginPath={loginPath}
               type="answer"
-              cancelHandler={() => setActiveComment(null)}
+              closeForm={() => setActiveComment(null)}
               submitHandler={submitHandler}
               id={comment._id}
+              hasOffset={hasOffset}
             />
           )}
         </div>
@@ -62,6 +73,7 @@ CommentsBlock.propTypes = {
   activeComment: PropTypes.string,
   setActiveComment: PropTypes.func,
   submitHandler: PropTypes.func,
+  myUsername: PropTypes.string,
 };
 
 export default memo(CommentsBlock);

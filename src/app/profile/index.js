@@ -14,12 +14,12 @@ import TopHead from '../../containers/top-head';
 import ProfileCard from '../../components/profile-card';
 
 function Profile() {
-  const { t } = useTranslate();
+  const { t, lang } = useTranslate();
   const store = useStore();
 
   useInit(() => {
     store.actions.profile.load();
-  }, []);
+  }, [lang]);
 
   const select = useSelector(state => ({
     profile: state.profile.data,

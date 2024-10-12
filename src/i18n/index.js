@@ -11,8 +11,13 @@ class I18n {
   constructor(services, config = {}) {
     this.services = services;
     this.config = config;
-    this.lang = config.defaultLang || 'ru';
+    this.lang = localStorage.getItem('lang') || config.defaultLang || 'ru';
     this.listeners = [];
+
+    this.services.api.defaultHeaders = {
+      ...this.services.api.defaultHeaders,
+      'Accept-Language': this.lang,
+    };
   }
 
   getLang() {
@@ -21,6 +26,7 @@ class I18n {
 
   setLang(lang) {
     this.lang = lang;
+    localStorage.setItem('lang', lang);
 
     for (const listener of this.listeners) listener(this.lang);
 

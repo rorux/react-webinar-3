@@ -2,12 +2,25 @@
   padding: 15px 0;
 }
 
+.CommentForm_hasOffset {
+  padding-left: 30px;
+}
+
 .CommentForm-denied {
   font-size: 16px;
 }
 
 .CommentForm-link {
   color: #0087E9;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.CommentForm-cancel {
+  color: #666;
+  margin-left: 5px;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .CommentForm-row {

@@ -6,7 +6,7 @@ import { cn as bem } from '@bem-react/classname';
 import SideLayout from '../side-layout';
 import './style.css';
 
-function CommentCard({ id, author, date, text, onAnswerClick, answerLabel }) {
+function CommentCard({ id, author, date, text, onAnswerClick, answerLabel, myUsername }) {
   const { pathname } = useLocation();
   const cn = bem('CommentCard');
 
@@ -14,7 +14,7 @@ function CommentCard({ id, author, date, text, onAnswerClick, answerLabel }) {
     <div className={cn()}>
       <div className={cn('row')}>
         <SideLayout>
-          <span className={cn('author')}>{author}</span>
+          <span className={cn('author', { me: myUsername === author })}>{author}</span>
           <span className={cn('date')}>{date}</span>
         </SideLayout>
       </div>
@@ -22,10 +22,13 @@ function CommentCard({ id, author, date, text, onAnswerClick, answerLabel }) {
         <div className={cn('text')}>{text}</div>
       </div>
       <div className={cn('row')}>
-        <HashLink smooth to={`${pathname}#${id}`}>
-          <span className={cn('answer')} onClick={() => onAnswerClick()}>
-            {answerLabel}
-          </span>
+        <HashLink
+          to={`${pathname}#${id}`}
+          scroll={el => el.scrollIntoView({ behavior: 'smooth', block: 'end' })}
+          className={cn('answer')}
+          onClick={() => onAnswerClick()}
+        >
+          {answerLabel}
         </HashLink>
       </div>
     </div>
@@ -39,6 +42,7 @@ CommentCard.propTypes = {
   text: PropTypes.string,
   onAnswerClick: PropTypes.func,
   answerLabel: PropTypes.string,
+  myUsername: PropTypes.string,
 };
 
 export default memo(CommentCard);
