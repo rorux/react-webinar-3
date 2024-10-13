@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import SideLayout from '../side-layout';
@@ -26,7 +26,9 @@ function CommentForm({
         <div className={cn('denied')}>
           <span
             className={cn('link')}
-            onClick={() => navigate(loginPath, { state: { back: location.pathname } })}
+            onClick={() => {
+              navigate(loginPath, { state: { back: `${location.pathname}?comment=${id}` } });
+            }}
           >
             {t('comments.logIn')}
           </span>

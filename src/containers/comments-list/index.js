@@ -1,16 +1,17 @@
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector as useReduxSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import shallowequal from 'shallowequal';
 import useTranslate from '../../hooks/use-translate';
 import useSelector from '../../hooks/use-selector';
 import commentsActions from '../../store-redux/comments/actions';
-import formatDateByLocale from '../../utils/format-date-by-locale';
+import formatCommentDate from '../../utils/format-comment-date';
 import commentsListToTree from '../../utils/comments-list-to-tree';
 import Spinner from '../../components/spinner';
 import TitleWithCount from '../../components/title-with-count';
 import CommentsBlock from '../../components/comments-block';
 import RootCommentForm from '../../components/root-comment-form';
+import ScrollCommentsContextProvider from './scroll-comments-context';
 
 const LOGIN_PATH = '/login';
 
@@ -33,7 +34,7 @@ function CommentsList({ articleId }) {
   }));
 
   const callbacks = {
-    formatDate: useCallback(date => formatDateByLocale(date, lang), [lang, formatDateByLocale]),
+    formatDate: useCallback(date => formatCommentDate(date, lang), [lang, formatCommentDate]),
     setActiveComment: useCallback(
       id => {
         dispatch(commentsActions.setActive(id));
@@ -62,29 +63,31 @@ function CommentsList({ articleId }) {
   const commentsList = useMemo(() => commentsListToTree(reduxSelect.list), [reduxSelect.list]);
 
   return (
-    <Spinner active={reduxSelect.waiting}>
-      <TitleWithCount title={t('comments.title')} count={reduxSelect.list.length} />
-      <CommentsBlock
-        list={commentsList}
-        t={t}
-        formatDate={callbacks.formatDate}
-        sessionExists={select.exists}
-        loginPath={LOGIN_PATH}
-        activeComment={reduxSelect.activeComment}
-        setActiveComment={callbacks.setActiveComment}
-        submitHandler={callbacks.addAnswer}
-        myUsername={select.username}
-      />
-      {reduxSelect.activeComment === null && (
-        <RootCommentForm
+    <ScrollCommentsContextProvider>
+      <Spinner active={reduxSelect.waiting}>
+        <TitleWithCount title={t('comments.title')} count={reduxSelect.list.length} />
+        <CommentsBlock
+          list={commentsList}
           t={t}
+          formatDate={callbacks.formatDate}
           sessionExists={select.exists}
           loginPath={LOGIN_PATH}
-          type="comment"
-          submitHandler={callbacks.addComment}
+          activeComment={reduxSelect.activeComment}
+          setActiveComment={callbacks.setActiveComment}
+          submitHandler={callbacks.addAnswer}
+          myUsername={select.username}
         />
-      )}
-    </Spinner>
+        {reduxSelect.activeComment === null && (
+          <RootCommentForm
+            t={t}
+            sessionExists={select.exists}
+            loginPath={LOGIN_PATH}
+            type="comment"
+            submitHandler={callbacks.addComment}
+          />
+        )}
+      </Spinner>
+    </ScrollCommentsContextProvider>
   );
 }
 
